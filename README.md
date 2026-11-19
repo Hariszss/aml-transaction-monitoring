@@ -34,8 +34,28 @@ activity?**
 2. How many alerts do simple rules generate, what share of them carry a positive
    label, and how many labelled transactions do they miss?
 3. What happens when the rules are made more sensitive or more restrictive?
-4. *(Secondary)* How does a plain logistic regression compare at the same
-   alert volumes?
+4. *(Secondary)* How does a simple logistic regression compare with
+   transparent monitoring rules, accounting for differences in alert volume?
+
+## Key findings
+
+All numbers are from the held-out test period (8–10 Sept). A false positive
+means an alert on a transaction without the simulated laundering label.
+
+- **Simple monitoring rules generate substantial alert volumes while detecting
+  relatively few labelled transactions.** At the moderate setting (1.0–2.0% of
+  test transactions flagged), each rule found 2–9% of labelled transactions,
+  with 200–470 false positives per hit ([Figure 4](figures/fig4_precision_vs_alert_volume.png)).
+- **Increasing rule sensitivity can add many alerts with limited additional
+  detection.** Moving Rule 1 from 1% to 5% of transactions raised alerts from
+  14,055 to 66,508 but added only 8 true positives. Running all three rules
+  together flagged 3.9% of transactions and found 15% of positives.
+- **Logistic regression performs better in this dataset, but its apparent
+  advantage is strongly associated with synthetic payment-format patterns.**
+  At 0.94% of transactions flagged it found 21% of positives, with 39 false
+  positives per hit ([Figure 3](figures/fig3_recall_vs_alert_volume.png)).
+  Its strongest coefficients are payment formats, and flagging every ACH
+  payment alone would reach 86.9% recall.
 
 ## Data
 
@@ -64,7 +84,13 @@ activity?**
 produces almost no ordinary transactions, but labelled laundering continues
 (e.g. 11 Sept: 396 transactions, 232 labelled positive). Including those days
 would make detection look artificially easy, so the analysis uses 1–10 Sept
-only (5,077,237 transactions, 4,522 positive labels).
+only (5,077,237 transactions, 4,522 positive labels). I made this decision at
+the data-profiling stage, after examining daily transaction volumes and label
+counts for the whole file, including the days that later became the test
+period, but before any feature, rule or model had been evaluated. The test
+period was therefore not untouched by every analytical decision: its end date
+was chosen with knowledge of its daily volumes and labels, though not of any
+performance results.
 
 ## Methods
 
@@ -91,9 +117,9 @@ only (5,077,237 transactions, 4,522 positive labels).
 | Validation | 6–7 Sept | 964,840 | 1,028 | 0.107% |
 | Test | 8–10 Sept | 1,345,565 | 1,495 | 0.111% |
 
-Exploration and rule design used train and validation only. Thresholds were
-chosen on validation only. The test period was used once, for the final
-comparison.
+Apart from the date cutoff described above, exploration and rule design used
+train and validation only. Thresholds were chosen on validation only. Test
+performance was computed once, for the final comparison.
 
 **Exploration with Spark SQL and DataFrames** ([`scripts/02_explore_with_spark.py`](scripts/02_explore_with_spark.py)):
 covers class balance, payment formats, amounts, account activity, incoming
@@ -204,7 +230,8 @@ Rule 3 0.0016, logistic regression 0.0183. Full tables:
 
 ### Main observations
 
-1. **Simple single-transaction rules barely beat random alerting.** At the
+1. **The three simple monitoring rules offer limited detection performance
+   relative to their alert burden.** At the
    moderate setting (thresholds aimed at 1%; on the test days they flagged
    1.0–2.0% of transactions) the three rules find 2–9% of labelled
    transactions, against 1–2% for random alerting at the same volume. More than 99% of their alerts are false positives
@@ -228,10 +255,11 @@ Rule 3 0.0016, logistic regression 0.0183. Full tables:
    transactions it finds 21% of positives with 39 false positives per hit.
    But its strongest coefficients are payment format (ACH +5.4,
    Reinvestment −6.0). Flagging *every* ACH payment would alone reach 86.9%
-   recall at 13.2% alert volume (precision 0.73%). Much of the model's
-   advantage therefore comes from a simulator artefact, not from behaviour
-   that would carry over to real data.
-6. **Many labels are invisible to per-transaction rules.** Much of the
+   recall at 13.2% alert volume (precision 0.73%). The model's stronger
+   performance appears to depend substantially on payment-format patterns
+   specific to the synthetic dataset, limiting conclusions about real-world
+   effectiveness.
+6. **Many labels are hard to catch with transaction-level alerts.** Much of the
    laundering in this dataset is generated as multi-step patterns (fan-out,
    cycles, scatter-gather, …). Across all simulated patterns the three rules catch at
    most about a fifth of the labelled transactions at the moderate setting.
@@ -278,6 +306,8 @@ for real operational figures.
 - **Exchange rates** are estimated from the data, one fixed rate per currency.
 - **Transaction-level evaluation.** Real systems often alert on accounts or
   customers over a period. Account-level aggregation would change the counts.
+- **The 1–10 Sept cutoff was chosen after seeing daily volumes and labels for
+  all days**, including the test days (no performance results were involved).
 - **Rule 3 was redesigned once**, prompted by validation results and
   confirmed on training data (documented above). The test period was not
   involved.
