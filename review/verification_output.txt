@@ -1,0 +1,10 @@
+test transactions 1,345,565, positives 1,495
+operating points checked: 12
+ACH reference: 177,634 alerts, recall 0.8689, precision 0.0073
+PR-AUC large_amount: recomputed 0.00211, reported 0.00211
+PR-AUC amount_vs_history: recomputed 0.00174, reported 0.00174
+PR-AUC fan_in: recomputed 0.00165, reported 0.00165
+PR-AUC logistic_regression: recomputed 0.01831, reported 0.01831
+README.md: 13 table rows checked
+
+All recomputed numbers match the result files and the documentation tables.

@@ -1,0 +1,18 @@
+feature,coefficient
+cat__payment_format_Reinvestment,-6.024146926012146
+cat__payment_format_ACH,5.404138121279971
+cat__payment_format_Wire,-4.553453557706332
+num__log_sender_n_recipients_24h,4.496941560776265
+num__log_sender_n_out_24h,-4.13709972192426
+cat__payment_format_Bitcoin,2.13300653671598
+num__is_cross_currency,-1.7088487640429222
+num__log_amount_usd,0.771267244339468
+num__log_sender_n_out_7d,0.7276219658796741
+num__has_history,-0.45340908138653896
+num__log_amount_vs_history,-0.35648240204069603
+num__is_self_transfer,-0.30180063211017094
+cat__payment_format_Cash,-0.2991665863541307
+cat__payment_format_Credit Card,-0.24941411201201433
+num__is_cross_bank,0.2154196246016054
+num__log_receiver_n_senders_24h,-0.119654673304099
+cat__payment_format_Cheque,-0.04835775036513989

@@ -1,0 +1,8 @@
+payment_format,transactions,positive_labels,positive_rate_pct,pct_of_transactions,pct_of_positive_labels
+ACH,422055,2529,0.599,11.31,83.55
+Cheque,1318764,234,0.018,35.34,7.73
+Credit Card,931670,149,0.016,24.97,4.92
+Cash,347476,78,0.022,9.31,2.58
+Bitcoin,107415,37,0.034,2.88,1.22
+Wire,123236,0,0.0,3.3,0.0
+Reinvestment,481056,0,0.0,12.89,0.0

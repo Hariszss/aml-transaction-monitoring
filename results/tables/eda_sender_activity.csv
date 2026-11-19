@@ -1,0 +1,5 @@
+sender_activity_24h,transactions,positive_labels,pct_of_transactions,pct_of_positive_labels,positive_rate_pct
+a) no payment in previous 24h,782174,1351,20.96,44.63,0.173
+b) 1-10 payments,2284773,1092,61.23,36.08,0.048
+c) 11-100 payments,346151,129,9.28,4.26,0.037
+d) more than 100 payments,318574,455,8.54,15.03,0.143

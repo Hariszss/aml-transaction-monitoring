@@ -1,0 +1,5 @@
+approach,pr_auc_test,max_recall_test
+large_amount,0.00210854324726335,1.0
+amount_vs_history,0.0017417225103079255,0.5625418060200669
+fan_in,0.0016484343981268803,1.0
+logistic_regression,0.018310096285324567,1.0
